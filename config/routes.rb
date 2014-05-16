@@ -3,6 +3,8 @@ RaspiServer::Application.routes.draw do
 
   post 'photos/exec_shoot'
 
+  match 'photo_serve/:file_path' => 'photos#serve', :via => :get
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
