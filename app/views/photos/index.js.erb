@@ -1,1 +1,1 @@
-$('#picnum').html("<%= @num_of_pics %>");
+$('#picnum').html("<iframe width=100% srcdoc=\"<% @pics.each do |pic| %><img src=photo_serve/<%= pic %> width=200><% end %>\"></iframe>");

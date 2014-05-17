@@ -1,9 +1,16 @@
 class PhotosController < ApplicationController
 
-  @@num_of_pics = 0
+  @@pics
 
   def index
     p "PhotosController::index start"
+    Dir.chdir(ENV['PHOTO_DIR'])
+    @@pics = Dir.glob("*.{jpg,jpeg}")
+    
+    @pics = @@pics
+
+    @my_ip_address = local_ip
+
     render
   end
 
@@ -13,13 +20,12 @@ class PhotosController < ApplicationController
     p "Command for taking photo = #{ENV['CMD_TO_TAKE_PHOTO']}"
     system (ENV['CMD_TO_TAKE_PHOTO'])
 
-    @@num_of_pics += 1
-    p "num_of_pics = #{@@num_of_pics}"
+    Dir.chdir(ENV['PHOTO_DIR'])
+    @@pics = Dir.glob("*.{jpg,jpeg}")
+    system ("cp /tmp/test.jpg /tmp/test#{@@pics.length + 1}.jpg")
 
-    @num_of_pics = @@num_of_pics
-
-    # TODO: count num of pictures
-    # TODO: create array of files, used by js
+    @@pics = Dir.glob("*.{jpg,jpeg}")
+    @pics = @@pics
 
     render 'index'
   end
@@ -35,4 +41,15 @@ class PhotosController < ApplicationController
       :type => 'image/jpeg',
       :x_sendfile => true)
   end
+
+  def local_ip
+    orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
+    UDPSocket.open do |s|
+      s.connect '64.233.187.99', 1
+      s.addr.last
+    end
+    ensure
+      Socket.do_not_reverse_lookup = orig
+  end
+
 end
