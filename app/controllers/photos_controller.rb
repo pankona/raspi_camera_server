@@ -11,6 +11,9 @@ class PhotosController < ApplicationController
 
     @my_ip_address = local_ip
 
+    photo = Photo.new
+    photo.hello
+
     render
   end
 
