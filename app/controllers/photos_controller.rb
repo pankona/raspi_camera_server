@@ -25,7 +25,7 @@ class PhotosController < ApplicationController
 
     Dir.chdir(ENV['PHOTO_DIR'])
     @@pics = Dir.glob("*.{jpg,jpeg}")
-    system ("cp /tmp/test.jpg /tmp/test#{@@pics.length + 1}.jpg")
+    system ("mv /tmp/pic.jpg /tmp/pic#{@@pics.length + 1}.jpg")
 
     @@pics = Dir.glob("*.{jpg,jpeg}")
     @pics = @@pics
