@@ -1,4 +1,16 @@
-source 'https://rubygems.org'
+class << Bundler.ui
+  def tell_me (msg, color = nil, newline = nil)
+    msg = word_wrap(msg) if newline.is_a?(Hash) && newline[:wrap]
+    msg = "[#{Time.now}] " + msg if msg.length > 3
+    if newline.nil?
+      @shell.say(msg, color)
+    else
+      @shell.say(msg, color, newline)
+    end
+  end
+end
+
+source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.4'
