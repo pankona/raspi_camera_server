@@ -1,42 +1,23 @@
 class PhotosController < ApplicationController
 
-  @@pics
-
   def index
     p "PhotosController::index start"
-    Dir.chdir(ENV['PHOTO_DIR'])
-    @@pics = Dir.glob("*.{jpg,jpeg}")
-    
-    @pics = @@pics
-
     @my_ip_address = local_ip
-
-    photo = Photo.new
-    photo.hello
-
+    @pics = Photo.get_photos
     render
   end
 
   def exec_shoot
     p "PhotosController::exec_shoot start"
-    p "exec_shoot called."
-    p "Command for taking photo = #{ENV['CMD_TO_TAKE_PHOTO']}"
-    system (ENV['CMD_TO_TAKE_PHOTO'])
-
-    Dir.chdir(ENV['PHOTO_DIR'])
-    @@pics = Dir.glob("*.{jpg,jpeg}")
-    system ("mv /tmp/pic.jpg /tmp/pic#{@@pics.length + 1}.jpg")
-
-    @@pics = Dir.glob("*.{jpg,jpeg}")
-    @pics = @@pics
-
+    Photo.take_photo
+    @pics = Photo.get_photos
     render 'index'
   end
 
   def serve
     p "PhotosController::serve start"
-    path = "#{ENV['PHOTO_DIR']}/#{params[:file_path]}.#{params[:format]}"
-    p "file_path = #{path}"
+    photo_name = "#{params[:file_path]}.#{params[:format]}"
+    path = Photo.get_fullpath_from_photo_name(photo_name)
 
     send_file(
       path,
