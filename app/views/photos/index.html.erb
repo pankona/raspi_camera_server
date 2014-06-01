@@ -1,7 +1,6 @@
-<img src="http://<%= @my_ip_address %>:8080/?action=stream">
 
 <%= form_tag(url_for(:action => 'exec_shoot'), :remote => true) do %>
-  <%= submit_tag "Shoot!" %>
+  <input type="image" src="http://<%= @my_ip_address %>:8080/?action=stream" width="100%">
 <% end %>
 
 <p>
