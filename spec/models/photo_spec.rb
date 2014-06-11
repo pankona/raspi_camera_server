@@ -1,5 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe Photo, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Photo do
+  describe "get_photos" do
+    context "normal case" do
+      it "returns array of photos" do
+        expect(Photo.get_photos).not_to be nil
+      end
+    end
+  end
 end
