@@ -1,8 +1,8 @@
-class PhotosController < ApplicationController
 
+class PhotosController < ApplicationController
   def index
     p "PhotosController::index start"
-    @my_ip_address = local_ip
+    @my_ip_address = Photo.local_ip
     @pics = Photo.get_photos
     render
   end
@@ -25,15 +25,4 @@ class PhotosController < ApplicationController
       :type => 'image/jpeg',
       :x_sendfile => true)
   end
-
-  def local_ip
-    orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true
-    UDPSocket.open do |s|
-      s.connect '64.233.187.99', 1
-      s.addr.last
-    end
-    ensure
-      Socket.do_not_reverse_lookup = orig
-  end
-
 end
